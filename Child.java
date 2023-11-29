@@ -1,16 +1,19 @@
 
 import mayflower.*;
 
-import java.util.Vector;
+import java.security.Key;
 
 public class Child extends AnimatedActor{
     private Animation walk;
     private Animation jump;
     private Animation idle;
-    private Vector2D velocity;
     private int speed;
+    private int dashCooldown;
+    private boolean dash;
+    private int dashDuration;
     public Child (){
-        speed = 5;
+        dashCooldown = 0;
+        speed = 3;
         String[] frames = new String[1];
         frames[0] = "Sprites/Player_Temp.png";
         walk = new Animation(50, frames);
@@ -20,25 +23,51 @@ public class Child extends AnimatedActor{
     }
 
     public void act(){
-        velocity.x = 0;
-        velocity.y = 0;
-
-        if(Mayflower.isKeyDown(Keyboard.KEY_W)){
-            velocity.y -= 1;
+        if(!dash) {
+            velocity.x = 0;
         }
-        if(Mayflower.isKeyDown(Keyboard.KEY_A)){
+        if (dashDuration < 0 && dash){
+            dash = false;
+            grav = true;
+            velocity.y = 0;
+        } else {
+            dashDuration--;
+        }
+
+        if(this.isTouching(Block.class) && dashCooldown > 20){
+            dashCooldown = 20;
+        }
+
+        if(Mayflower.isKeyDown(Keyboard.KEY_W) && this.isTouching(Block.class) && !dash){
+            velocity.y = -2.2f;
+        } else if(Mayflower.isKeyDown(Keyboard.KEY_W) && !dash){
+            velocity.y -= 0.045f;
+        }
+        if(Mayflower.isKeyDown(Keyboard.KEY_A) && !dash){
             velocity.x -= 1;
         }
-        if(Mayflower.isKeyDown(Keyboard.KEY_S)){
-            velocity.y += 1;
+        if(Mayflower.isKeyDown(Keyboard.KEY_S) && !dash){
+            velocity.y += 0.1f;
         }
-        if(Mayflower.isKeyDown(Keyboard.KEY_D)){
+        if(Mayflower.isKeyDown(Keyboard.KEY_D) && !dash){
             velocity.x += 1;
         }
 
-        //velocity.normalize();
+        if(Mayflower.isKeyPressed(Keyboard.KEY_SPACE) && dashCooldown < 0){
+            dashCooldown = 100;
+            if(Mayflower.isKeyDown(Keyboard.KEY_W)) velocity.y -= 6f;
+            if(Mayflower.isKeyDown(Keyboard.KEY_A)) velocity.x -= 6f;
+            if(Mayflower.isKeyDown(Keyboard.KEY_S)) velocity.y += 6f;
+            if(Mayflower.isKeyDown(Keyboard.KEY_D)) velocity.x += 6f;
+            dashDuration = 5;
+            dash = true;
+            grav = false;
+        }
 
         setLocation(getX()+velocity.x*speed, getY()+ velocity.y*speed);
         super.act();
+        if (dashCooldown >= 0){
+            dashCooldown--;
+        }
     }
 }

@@ -15,5 +15,6 @@ public class MyMayflower extends Mayflower
         Mayflower.setFullScreen(false);
         World w =  new MyWorld();
         Mayflower.setWorld(w);
+
     }
 }
