@@ -8,9 +8,18 @@ public class MyWorld extends World {
     ArrayList<Enemy> enemies;
     int tileSize;
     Child child;
+    Animation crawlid;
+    String[] frames;
     public MyWorld()
     {
-        enemies = new ArrayList<Enemy>();
+        frames = new String[1];
+        for(int i = 0;i < frames.length;i++){
+            frames[i] = "Sprites/Crawlid.png";
+        }
+        crawlid = new Animation (50,frames);
+        enemies = new ArrayList<>();
+        definetlyNotCrawlid crawlid1 = new definetlyNotCrawlid(10, 700, 400, crawlid);
+        addObject(crawlid1 ,700,400);
         tileSize = 64;
         child = new Child();
         addObject(child, 400, 400);
