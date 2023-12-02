@@ -200,20 +200,6 @@ public class MyWorld extends World {
             addObject(floors[i], i*tileSize,getHeight()-tileSize);
         }
     }
-    public void animate(int nFrame, String fName, String[] frames, boolean more1){
-        if(more1){
-            for(int i = 0;i < nFrame;i++){
-                frames[i] = "Sprites/" + fName + i + ".png";
-            }
-        }else{
-            for(int i = 0;i < nFrame;i++){
-                frames[i] = "Sprites/" + fName + ".png";
-            }
-        }
-
-
-
-    }
 
     public void generateWorld(String[][] room){
         for(int i = 0; i < room.length; i++){
