@@ -47,7 +47,7 @@ public class Child extends AnimatedActor{
             dashCoolDown = 20;
         }
 
-        if(Mayflower.isKeyDown(Keyboard.KEY_W) && this.isTouching(Block.class) && !dash){
+        if(Mayflower.isKeyDown(Keyboard.KEY_W) && this.isTouchingAtOffset(0,getHeight()/2,Block.class) && !dash){
             velocity.y = -2.2f;
         } else if(Mayflower.isKeyDown(Keyboard.KEY_W) && !dash){
             velocity.y -= 0.045f;
@@ -75,8 +75,14 @@ public class Child extends AnimatedActor{
             grav = false;
         }
 
-        if(umbrella.touchBlock() && (umbrella.getRotation() < 130 && umbrella.getRotation() > 50) && swingTimer >= 37) velocity.y = -1;
+        if(umbrella.touchBlock() && (umbrella.getRotation() < 130 && umbrella.getRotation() > 50) && swingTimer == 37) velocity.y = -1;
 
+        if(this.isTouchingAtOffset(getWidth()/2+1 + (int) velocity.x,0,Block.class) && velocity.x > 0) velocity.x = 0;
+        if(this.isTouchingAtOffset(-getWidth()/2-2 + (int) velocity.x,0,Block.class) && velocity.x < 0) velocity.x = 0;
+        if(this.isTouchingAtOffset(0,-getHeight()/2 + (int) velocity.y,Block.class)){
+            setLocation(getX(),getY()+1);
+            velocity.y = 0;
+        }
         setLocation(getX()+velocity.x*speed, getY()+ velocity.y*speed);
         super.act();
 
