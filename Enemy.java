@@ -1,16 +1,28 @@
 public class Enemy extends AnimatedActor{
     private Health hp;
-    private Vector2D pos;
     private Animation walkR;
     private Animation walkL;
-    public Enemy(int hp, int xpos, int ypos, Animation walkAnim) {
+    public Enemy(int hp) {
         this.hp = new Health(hp);
-        pos = new Vector2D(xpos,ypos);
-        walkR = walkAnim;
-        Animation walkAnimL = walkAnim;
+
+    }
+    public void act(){
+        super.act();
+    }
+    public void setAnimation(int num){
+        if(num == 1){
+            setAnimation(walkR);
+        }else if(num == 2){
+            setAnimation(walkL);
+        }
+    }
+    public void setAnimationWalk(Animation walk){
+        this.walkR = walk;
+        Animation walkAnimL = walk;
         walkAnimL.flipX();
         walkL = walkAnimL;
         setAnimation(walkL);
+
     }
     public int getHealth(){
         return hp.getHealth();
