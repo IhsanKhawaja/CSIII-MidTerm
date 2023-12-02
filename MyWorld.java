@@ -1,12 +1,15 @@
 import mayflower.*;
-
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MyWorld extends World {
     Block[] floors;
     Block[][] currentRoom;
     String[][][] rooms;
+    ArrayList<Enemy> enemies;
+    Animation crawlid;
+    String[] frames;
     int tileSize;
     Child child;
     MyMouse mouse;
@@ -16,10 +19,8 @@ public class MyWorld extends World {
         frames = new String[1];
         animate(1,"Crawlid",frames,false);
         crawlid = new Animation (50,frames);
+        Walker crawlid1 = new Walker(10, crawlid);
 
-        walker crawlid1 = new walker(10, crawlid);
-        addObject(crawlid1 ,700,400);
-      
         tileSize = 64;
         rooms = new String[10][12][20];
         currentRoom = new Block[12][20];
@@ -184,7 +185,7 @@ public class MyWorld extends World {
         LetThereBeFloor();
         generateWorld(rooms[1]);
         addObject(child.umbrella, 400, 400);
-
+        addObject(crawlid1 ,400,400);
 
         addObject(mouse, 0, 0);
     }
