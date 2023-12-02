@@ -3,7 +3,7 @@ import mayflower.*;
 
 public class Child extends AnimatedActor{
     public Weapon umbrella;
-    private Animation walk;
+    private final Animation walk;
     private Animation jump;
     private Animation idle;
     private final int speed;
@@ -26,7 +26,7 @@ public class Child extends AnimatedActor{
         walk = new Animation(50, frames);
         walk.setScale(16*4,16*4);
         setAnimation(walk);
-        velocity = new Vector2D();
+        //velocity = new Vector2D();
         umbrella = new Weapon();
         this.mouse = mouse;
     }
