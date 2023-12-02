@@ -32,12 +32,12 @@ public class Animation
             frames[j].scale(w,h);
         }
     }
-
     public void SetTransparency(int percent){
         for(int j = 0; j < frames.length; j++){
             frames[j].setTransparency(percent);
         }
     }
+
     public void flipX(){
         for(int i = 0; i < frames.length; i++){
             frames[i].mirrorHorizontally();
