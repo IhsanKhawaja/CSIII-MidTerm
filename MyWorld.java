@@ -12,13 +12,12 @@ public class MyWorld extends World {
     String[] frames;
     public MyWorld()
     {
-        frames = new String[1];
-        for(int i = 0;i < frames.length;i++){
-            frames[i] = "Sprites/Crawlid.png";
-        }
-        crawlid = new Animation (50,frames);
         enemies = new ArrayList<>();
-        definetlyNotCrawlid crawlid1 = new definetlyNotCrawlid(10, 700, 400, crawlid);
+        frames = new String[1];
+        animate(1,"Crawlid",frames,false);
+        crawlid = new Animation (50,frames);
+
+        walker crawlid1 = new walker(10, crawlid);
         addObject(crawlid1 ,700,400);
         tileSize = 64;
         child = new Child();
@@ -42,6 +41,20 @@ public class MyWorld extends World {
             floors[i] = new Block("Sprites/Brick.png");
             addObject(floors[i], i*tileSize,getHeight()-tileSize);
         }
+    }
+    public void animate(int nFrame, String fName, String[] frames, boolean more1){
+        if(more1){
+            for(int i = 0;i < nFrame;i++){
+                frames[i] = "Sprites/" + fName + i + ".png";
+            }
+        }else{
+            for(int i = 0;i < nFrame;i++){
+                frames[i] = "Sprites/" + fName + ".png";
+            }
+        }
+
+
+
     }
 
 }
