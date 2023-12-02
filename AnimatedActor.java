@@ -1,6 +1,6 @@
 import mayflower.*;
 
-public class AnimatedActor extends gravity
+public class AnimatedActor extends Gravity
 {
     private Animation animation;
     private Timer animationTimer;

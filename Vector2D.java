@@ -1,3 +1,5 @@
+import java.math.MathContext;
+
 public class Vector2D {
     public float x;
     public float y;
@@ -18,5 +20,17 @@ public class Vector2D {
             y /= mag;
         }
         return this;
+    }
+
+    public float distance(Vector2D target){
+        return (float )Math.sqrt(Math.pow(xdiff(target), 2) + Math.pow(ydiff(target), 2));
+    }
+
+    public float xdiff(Vector2D target){
+        return (float) target.x - this.x;
+    }
+
+    public float ydiff(Vector2D target){
+        return (float) target.y - this.y;
     }
 }
