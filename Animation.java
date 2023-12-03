@@ -17,11 +17,7 @@ public class Animation
     }
 
     public int getFrameRate(){
-
         return framerate;
-    }
-    public String[] getFrame(){
-        return frame;
     }
 
     public MayflowerImage getNextFrame(){
@@ -48,5 +44,9 @@ public class Animation
         for(int i = 0; i < frames.length; i++){
             frames[i].mirrorHorizontally();
         }
+    }
+
+    public String[] getFrame(){
+        return frame;
     }
 }

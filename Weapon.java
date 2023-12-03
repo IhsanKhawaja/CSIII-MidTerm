@@ -36,6 +36,6 @@ public class Weapon extends AnimatedActor {
     }
 
     public boolean touchBlock(){
-        return this.isTouching(Block.class);
+        return this.isTouching(Wall.class);
     }
 }
