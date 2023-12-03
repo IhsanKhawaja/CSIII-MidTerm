@@ -15,6 +15,6 @@ public class Gravity extends Actor {
 
         int fallSpeed = 7;
         if(velocity.y > fallSpeed) velocity.y = fallSpeed;
-        if(this.isTouchingAtOffset(0,getHeight()/2 + (int) velocity.y,Block.class)) velocity.y = 0;
+        if(this.isTouchingAtOffset(0,getHeight()/2 + (int) velocity.y,Wall.class)) velocity.y = 0;
     }
 }
