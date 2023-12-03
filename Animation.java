@@ -3,13 +3,11 @@ import mayflower.*;
 public class Animation
 {
     private MayflowerImage[] frames;
-    private String[] frame;
     private int framerate;
     private int currentFrame;
 
     public Animation(int fRate, String[] names){
         framerate = fRate;
-        frame = names;
         frames = new MayflowerImage[names.length];
         for(int i = 0; i < names.length; i++){
             frames[i] = new MayflowerImage(names[i]);
@@ -17,11 +15,7 @@ public class Animation
     }
 
     public int getFrameRate(){
-
         return framerate;
-    }
-    public String[] getFrame(){
-        return frame;
     }
 
     public MayflowerImage getNextFrame(){

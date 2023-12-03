@@ -26,12 +26,15 @@ public class Child extends AnimatedActor{
         walk = new Animation(50, frames);
         walk.setScale(16*4,16*4);
         setAnimation(walk);
-        //velocity = new Vector2D();
         umbrella = new Weapon();
         this.mouse = mouse;
     }
 
     public void act(){
+        if(isTouchingAtOffset(0,0,Ladder.class)) velocity.y = 0;
+        if(isTouchingAtOffset(0,0,Ladder.class) && Mayflower.isKeyDown(Keyboard.KEY_W)) velocity.y -= 1;
+        if(isTouchingAtOffset(0,0,Ladder.class) && Mayflower.isKeyDown(Keyboard.KEY_S)) velocity.y += 1;
+
         if(!dash) {
             velocity.x = 0;
         }
@@ -43,11 +46,11 @@ public class Child extends AnimatedActor{
             dashDuration--;
         }
 
-        if(this.isTouching(Block.class) && dashCoolDown > 20){
+        if((this.isTouchingAtOffset(0,getHeight()/2,Wall.class) || isTouchingAtOffset(0,0,Ladder.class)) && dashCoolDown > 30){
             dashCoolDown = 20;
         }
 
-        if(Mayflower.isKeyDown(Keyboard.KEY_W) && this.isTouchingAtOffset(0,getHeight()/2,Block.class) && !dash){
+        if(Mayflower.isKeyDown(Keyboard.KEY_W) && this.isTouchingAtOffset(0,getHeight()/2,Wall.class) && !dash){
             velocity.y = -2.2f;
         } else if(Mayflower.isKeyDown(Keyboard.KEY_W) && !dash){
             velocity.y -= 0.045f;
@@ -63,9 +66,9 @@ public class Child extends AnimatedActor{
         }
 
         if(Mayflower.isKeyPressed(Keyboard.KEY_SPACE) && dashCoolDown < 0){
-            dashCoolDown = 100;
+            dashCoolDown = 1000;
             if(Mayflower.isKeyDown(Keyboard.KEY_W)) velocity.y -= 6f;
-            else if(Mayflower.isKeyDown(Keyboard.KEY_S) && !this.isTouchingAtOffset(0,getHeight(),Block.class)) velocity.y += 6f;
+            else if(Mayflower.isKeyDown(Keyboard.KEY_S) && !this.isTouchingAtOffset(0,getHeight(),Wall.class)) velocity.y += 6f;
             else velocity.y = 0;
 
             if(Mayflower.isKeyDown(Keyboard.KEY_A)) velocity.x -= 6f;
@@ -77,9 +80,9 @@ public class Child extends AnimatedActor{
 
         if(umbrella.touchBlock() && (umbrella.getRotation() < 130 && umbrella.getRotation() > 50) && swingTimer == 37) velocity.y = -1;
 
-        if(this.isTouchingAtOffset(getWidth()/2+1 + (int) velocity.x,0,Block.class) && velocity.x > 0) velocity.x = 0;
-        if(this.isTouchingAtOffset(-getWidth()/2-2 + (int) velocity.x,0,Block.class) && velocity.x < 0) velocity.x = 0;
-        if(this.isTouchingAtOffset(0,-getHeight()/2 + (int) velocity.y,Block.class)){
+        if(this.isTouchingAtOffset(getWidth()/2+1 + (int) velocity.x,0,Wall.class) && velocity.x > 0) velocity.x = 0;
+        if(this.isTouchingAtOffset(-getWidth()/2-2 + (int) velocity.x,0,Wall.class) && velocity.x < 0) velocity.x = 0;
+        if(this.isTouchingAtOffset(0,-getHeight()/2 + (int) velocity.y,Wall.class)){
             setLocation(getX(),getY()+1);
             velocity.y = 0;
         }
@@ -104,5 +107,9 @@ public class Child extends AnimatedActor{
             umbrella.setRotation(0);
             umbrella.idle();
         }
+    }
+
+    public boolean door(){
+        return isTouching(Door.class);
     }
 }
