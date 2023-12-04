@@ -1,6 +1,6 @@
 public class Walker extends Enemy{
-    public Walker(int hp, Animation anim){
-        super(hp);
+    public Walker(int hp, Animation anim,Child child){
+        super(hp,child);
         velocity = new Vector2D(2,0);
         anim.setScale(64,54);
         super.setAnimationWalk(anim);

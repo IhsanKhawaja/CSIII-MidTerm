@@ -2,10 +2,27 @@ public class Enemy extends AnimatedActor{
     private Health hp;
     private Animation walkR;
     private Animation walkL;
-    public Enemy(int hp) {
+    private Child child;
+    private int damageCool;
+    public Enemy(int hp, Child child) {
         this.hp = new Health(hp);
+        this.child = child;
     }
     public void act(){
+        if (child.getAttack() && this.isTouching(Weapon.class) && damageCool==0) {
+            hp.takeDamage(5);
+            damageCool = 18;
+        }
+        if(damageCool>0) {
+            if(damageCool == 18){
+                walkR.SetTransparency(75);
+                walkL.SetTransparency(75);
+            }else if(damageCool == 1){
+                walkR.SetTransparency(0);
+                walkL.SetTransparency(0);
+            }
+            damageCool -= 1;
+        }
         super.act();
     }
     public void setAnimation(int num){
@@ -14,6 +31,9 @@ public class Enemy extends AnimatedActor{
         }else if(num == 1){
             setAnimation(walkL);
         }
+    }
+    public void setAnimation(Animation anim){
+            super.setAnimation(anim);
     }
     public void shouldTurningW() {
         if (isTouchingAtOffset( ((int) velocity.x / 2) * getWidth() / 2, 0, Wall.class) ||
@@ -24,13 +44,15 @@ public class Enemy extends AnimatedActor{
     }
 
     public void setAnimationWalk(Animation walk){
-        walkR = walk;
-        walkL = new Animation(50,walkR.getFrame());
+        walkR = new Animation(50,walk.getFrame());
+        walkR.setScale(64,54);
+        walkL = new Animation(50,walk.getFrame());
         walkL.setScale(64,54);
         walkL.flipX();
         setAnimation(walkL);
 
     }
+
     public int getHealth(){
         return hp.getHealth();
     }

@@ -4,6 +4,7 @@ public class Health {
         this.hp = hp;
     }
     public void takeDamage(int damage) {
+
         hp -= damage;
     }
     public int getHealth(){

@@ -201,6 +201,12 @@ public class MyWorld extends World {
             if(child.getX() > getWidth()/2) child.setLocation(64, child.getY());
             if(child.getY() < getHeight()/2) child.setLocation(child.getX(), getHeight()-child.getHeight());
         }
+        for(int i = 0; i<enemies.size();i++) {
+            if(enemies.get(i).getHealth()<=0){
+                removeObject(enemies.get(i));
+                enemies.remove(i);
+            }
+        }
     }
 
     public void LetThereBeFloor(){
@@ -230,7 +236,7 @@ public class MyWorld extends World {
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
                 if(room[i][j].equals("e")){
-                    enemies.add(new Walker(10, crawlid));
+                    enemies.add(new Walker(10, crawlid, child));
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                 }
             }
