@@ -14,10 +14,12 @@ public class Child extends AnimatedActor{
     private boolean attack;
     private int swingTimer;
     private double rotation;
+    private Health health;
 
     public Child (MyMouse mouse){
         swingTimer = 0;
         rotation = 0.0;
+        health = new Health(10);
         attack = false;
         dashCoolDown = 0;
         speed = 3;
@@ -110,7 +112,7 @@ public class Child extends AnimatedActor{
     }
 
     public boolean door(){
-        return isTouchingAtOffset(0,0,Door.class);
+        return isTouchingAtOffset(0,getHeight()/4,Door.class);
     }
 
     public boolean getAttack(){

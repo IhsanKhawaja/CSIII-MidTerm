@@ -21,6 +21,7 @@ public class MyMayflower extends Mayflower
     public void init()
     {
         //Change this to true to run this program in fullscreen mode
+        Mayflower.showBounds(true);
         Mayflower.setFullScreen(false);
         Mayflower.showCursor(false);
         World w =  new MyWorld();

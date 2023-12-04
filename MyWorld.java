@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class MyWorld extends World {
     Wall[] floors;
-    Block[][] currentRoom;
+    Actor[][] currentRoom;
     String[][][] rooms;
     int roomTally;
     int tileSize;
@@ -18,7 +18,6 @@ public class MyWorld extends World {
         frames = new String[1];
         animate(1,"Crawlid",frames,false);
         crawlid = new Animation (50,frames);
-        Walker crawlid1 = new Walker(10, crawlid);
 
         roomTally = 0;
         tileSize = 64;
@@ -36,32 +35,32 @@ public class MyWorld extends World {
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},  
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","d"},
-                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","d"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","e","-","-","d"},
         };
 
         String[][] room2 = new String[][]{
-                {"b","d","d","d","d","d","d","d","d","d","d","d","d","d","d","d","d","d","d","b"},
-                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
-                {"b","-","-","-","-","-","b","b","b","b","b","b","b","b","b","b","b","b","b","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","d","d","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","e","-","e","-","-","-","b"},
+                {"b","-","e","-","-","-","b","b","b","b","b","b","b","b","b","b","b","b","b","b"},
                 {"b","b","b","b","-","-","-","b","-","-","-","-","-","-","-","-","-","-","b","b"},
-                {"b","-","-","-","-","-","-","b","-","-","-","-","-","-","-","-","-","-","l","b"},
+                {"b","-","-","-","-","-","-","b","e","e","e","-","-","-","-","-","-","-","l","b"},
                 {"b","-","-","-","l","b","b","b","b","b","b","b","b","b","b","b","b","b","l","b"},
                 {"b","-","-","-","l","-","-","-","-","-","b","b","b","-","-","-","-","b","l","b"},
                 {"b","-","-","-","l","-","-","-","-","-","-","b","-","-","-","-","-","b","l","b"},
                 {"b","-","-","-","l","-","-","-","-","-","-","b","-","-","-","-","-","b","l","b"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","l","b"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","l","b"},
+                {"i","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","l","b"},
+                {"i","-","-","-","-","-","-","-","-","-","-","e","-","-","-","-","-","-","l","b"},
         };
 
         String[][] room3 = new String[][]{
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
+                {"e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e"},
+                {"e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e"},
+                {"e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e"},
+                {"e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e"},
+                {"e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e"},
+                {"e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e"},
+                {"e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e"},
+                {"e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
@@ -183,10 +182,9 @@ public class MyWorld extends World {
         floors = new Wall[getWidth()/tileSize];
 
         LetThereBeFloor();
-        generateWorld(rooms[0]);
         addObject(child, 400, 400);
+        generateWorld(rooms[0]);
         addObject(child.umbrella, 400, 400);
-        addObject(crawlid1 ,400,400);
 
 
         addObject(mouse, 0, 0);
@@ -200,7 +198,7 @@ public class MyWorld extends World {
             generateWorld(rooms[roomTally]);
             addObject(child, child.getX(),child.getY());
             addObject(child.umbrella, child.umbrella.getX(),child.umbrella.getY());
-            if(child.getX() > getWidth()/2) child.setLocation(10, child.getY());
+            if(child.getX() > getWidth()/2) child.setLocation(64, child.getY());
             if(child.getY() < getHeight()/2) child.setLocation(child.getX(), getHeight()-child.getHeight());
         }
     }
@@ -219,6 +217,10 @@ public class MyWorld extends World {
                     currentRoom[i][j] = new Wall("Sprites/Brick.png");
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
+                if(room[i][j].equals("i")){
+                    currentRoom[i][j] = new Wall("Sprites/Brick.png", 100);
+                    addObject(currentRoom[i][j], j*tileSize,i*tileSize);
+                }
                 if(room[i][j].equals("l")){
                     currentRoom[i][j] = new Ladder("Sprites/Ladder.png");
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
@@ -226,6 +228,10 @@ public class MyWorld extends World {
                 if(room[i][j].equals("d")){
                     currentRoom[i][j] = new Door("Sprites/Brick.png");
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
+                }
+                if(room[i][j].equals("e")){
+                    enemies.add(new Walker(10, crawlid));
+                    addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                 }
             }
         }
@@ -240,6 +246,9 @@ public class MyWorld extends World {
                     removeObject(currentRoom[i][j]);
                 }
             }
+        }
+        for (Enemy enemy:enemies){
+            removeObject(enemy);
         }
     }
 

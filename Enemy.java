@@ -2,11 +2,8 @@ public class Enemy extends AnimatedActor{
     private Health hp;
     private Animation walkR;
     private Animation walkL;
-    private int collide;
     public Enemy(int hp) {
         this.hp = new Health(hp);
-        collide = 0;
-
     }
     public void act(){
         super.act();
@@ -18,18 +15,12 @@ public class Enemy extends AnimatedActor{
             setAnimation(walkL);
         }
     }
-    public boolean isTurningW() {
-        if (isTouchingAtOffset(getWidth() / 2, 0, Block.class)) {
-            collide = 1;
-            return true;
-        } else if (isTouchingAtOffset(-getWidth() / 2, 0, Block.class)) {
-            collide = -1;
-            return true;
+    public void shouldTurningW() {
+        if (isTouchingAtOffset( ((int) velocity.x / 2) * getWidth() / 2, 0, Wall.class) ||
+                isTouchingAtOffset(((int) velocity.x / 2) * getWidth() / 2, 0 , Door.class) ||
+                !isTouchingAtOffset(((int) velocity.x / 2) * getWidth() / 2, getHeight() , Wall.class)){
+            velocity.x = -velocity.x;
         }
-        return false;
-    }
-    public int getCollide(){
-        return collide;
     }
 
     public void setAnimationWalk(Animation walk){
