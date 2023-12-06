@@ -15,8 +15,10 @@ public class Child extends AnimatedActor{
     private int swingTimer;
     private double rotation;
     private Health health;
+    private int iframes;
 
     public Child (MyMouse mouse){
+        iframes = 0;
         swingTimer = 0;
         rotation = 0.0;
         health = new Health(10);
@@ -26,6 +28,7 @@ public class Child extends AnimatedActor{
         String[] frames = new String[1];
         frames[0] = "Sprites/Player_Temp.png";
         walk = new Animation(50, frames);
+        System.out.println("child");
         walk.setScale(16*4,16*4);
         setAnimation(walk);
         umbrella = new Weapon();
@@ -36,8 +39,6 @@ public class Child extends AnimatedActor{
         if(isTouchingAtOffset(0,0,Ladder.class)) velocity.y = 0;
         if(isTouchingAtOffset(0,0,Ladder.class) && Mayflower.isKeyDown(Keyboard.KEY_W)) velocity.y -= 1;
         if(isTouchingAtOffset(0,0,Ladder.class) && Mayflower.isKeyDown(Keyboard.KEY_S)) velocity.y += 1;
-        pos.x = getX();
-        pos.y = getY();
 
         if(!dash) {
             velocity.x = 0;
@@ -111,6 +112,20 @@ public class Child extends AnimatedActor{
             umbrella.setRotation(0);
             umbrella.idle();
         }
+
+        if(isTouching(Enemy.class) && iframes == 0){
+            health.takeDamage(1);
+            iframes = 150;
+            velocity.y = -3;
+        }
+        if(iframes > 0){
+            iframes--;
+            System.out.println(iframes);
+        }
+    }
+
+    public int getHealth() {
+        return health.getHealth();
     }
 
     public boolean door(){

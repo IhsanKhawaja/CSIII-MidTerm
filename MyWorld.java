@@ -22,10 +22,13 @@ public class MyWorld extends World {
         frames = new String[1];
         animate(1,"Crawlid",frames,false);
         crawlid = new Animation (50,frames);
+        System.out.println("Crawlid");
         animate(1,"Hornet",frames,false);
         shooterWalk = new Animation (50,frames);
+        System.out.println("Hornet");
         animate(1,"HornetAttack",frames,false);
         shooterShoot = new Animation(50,frames);
+        System.out.println("HornetAttack");
         roomTally = 0;
         tileSize = 64;
         rooms = new String[10][12][20];
@@ -60,17 +63,17 @@ public class MyWorld extends World {
         };
 
         String[][] room3 = new String[][]{
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
+                {"b","d","d","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","l","b","b","b","b","b","b","b","b","b","b","b","b","b","b","l","-","-","b"},
+                {"b","l","-","-","s","-","s","-","s","-","-","-","-","-","-","b","l","-","-","b"},
+                {"b","l","-","-","-","-","-","-","-","-","-","-","-","-","-","b","l","-","-","b"},
+                {"b","l","-","-","-","-","-","-","-","-","-","-","-","-","-","b","l","-","-","b"},
+                {"b","l","-","s","-","s","-","s","-","-","e1","e1","-","-","e2","b","l","-","-","b"},
         };
 
         String[][] room4 = new String[][]{
@@ -205,7 +208,7 @@ public class MyWorld extends World {
             generateWorld(rooms[roomTally]);
             addObject(child, child.getX(),child.getY());
             addObject(child.umbrella, child.umbrella.getX(),child.umbrella.getY());
-            if(child.getX() > getWidth()/2) child.setLocation(64, child.getY());
+            if(child.getX() > getWidth()/2 && child.getY() > getHeight()/2) child.setLocation(64, child.getY());
             if(child.getY() < getHeight()/2) child.setLocation(child.getX(), getHeight()-child.getHeight());
         }
         for(int i = 0; i<enemies.size();i++) {
@@ -213,6 +216,10 @@ public class MyWorld extends World {
                 removeObject(enemies.get(i));
                 enemies.remove(i);
             }
+        }
+        if(child.getHealth() <= 0){
+            removeObject(child);
+            removeObject(child.umbrella);
         }
     }
 

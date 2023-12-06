@@ -9,6 +9,7 @@ public class Animation
 
     public Animation(int fRate, String[] names){
         framerate = fRate;
+        System.out.println(framerate);
         frame = new String[names.length];
         for(int i = 0;i<frame.length;i++){
             frame[i] = names[i];

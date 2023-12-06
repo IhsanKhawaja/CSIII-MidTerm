@@ -43,8 +43,6 @@ public class Enemy extends AnimatedActor{
                 isTouchingAtOffset(((int) velocity.x / 2) * getWidth() / 2, 0 , Door.class) ||
                 !isTouchingAtOffset(((int) velocity.x / 2) * getWidth() / 2, getHeight() , Wall.class)){
             velocity.x = -velocity.x;
-            if(velocity.x > 0) setAnimation(1);
-            if(velocity.x < 0) setAnimation(2);
         }
     }
 
