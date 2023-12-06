@@ -2,9 +2,11 @@ import mayflower.Actor;
 
 public class Gravity extends Actor {
     public Vector2D velocity;
+    public Vector2D pos;
     public boolean grav;
     public Gravity(){
         velocity = new Vector2D();
+        pos = new Vector2D();
         grav = true;
     }
 

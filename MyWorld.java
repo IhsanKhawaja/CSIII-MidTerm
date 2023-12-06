@@ -22,13 +22,10 @@ public class MyWorld extends World {
         frames = new String[1];
         animate(1,"Crawlid",frames,false);
         crawlid = new Animation (50,frames);
-        System.out.println("Crawlid");
         animate(1,"Hornet",frames,false);
         shooterWalk = new Animation (50,frames);
-        System.out.println("Hornet");
         animate(1,"HornetAttack",frames,false);
         shooterShoot = new Animation(50,frames);
-        System.out.println("HornetAttack");
         roomTally = 0;
         tileSize = 64;
         rooms = new String[10][12][20];

@@ -6,8 +6,7 @@ public class Walker extends Enemy{
         super.setAnimationWalk(anim);
     }
     public void act(){
-        if(velocity.x > 0) super.setAnimation(1);
-        if(velocity.x < 0) super.setAnimation(2);
+
         shouldTurningW();
         setLocation(getX()+velocity.x, getY()+ velocity.y);
         super.act();

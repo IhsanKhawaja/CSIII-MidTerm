@@ -26,7 +26,6 @@ public class Child extends AnimatedActor{
         String[] frames = new String[1];
         frames[0] = "Sprites/Player_Temp.png";
         walk = new Animation(50, frames);
-        System.out.println("child");
         walk.setScale(16*4,16*4);
         setAnimation(walk);
         umbrella = new Weapon();
@@ -37,6 +36,8 @@ public class Child extends AnimatedActor{
         if(isTouchingAtOffset(0,0,Ladder.class)) velocity.y = 0;
         if(isTouchingAtOffset(0,0,Ladder.class) && Mayflower.isKeyDown(Keyboard.KEY_W)) velocity.y -= 1;
         if(isTouchingAtOffset(0,0,Ladder.class) && Mayflower.isKeyDown(Keyboard.KEY_S)) velocity.y += 1;
+        pos.x = getX();
+        pos.y = getY();
 
         if(!dash) {
             velocity.x = 0;
