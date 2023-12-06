@@ -35,6 +35,9 @@ public class Enemy extends AnimatedActor{
     public void setAnimation(Animation anim){
             super.setAnimation(anim);
     }
+    public Child getChild(){
+        return child;
+    }
     public void shouldTurningW() {
         if (isTouchingAtOffset( ((int) velocity.x / 2) * getWidth() / 2, 0, Wall.class) ||
                 isTouchingAtOffset(((int) velocity.x / 2) * getWidth() / 2, 0 , Door.class) ||
@@ -44,13 +47,18 @@ public class Enemy extends AnimatedActor{
     }
 
     public void setAnimationWalk(Animation walk){
+        walkR = walk;
         walkR = new Animation(50,walk.getFrame());
         walkR.setScale(64,54);
-        walkL = new Animation(50,walk.getFrame());
+        walkL = walk;
+        walkL = new Animation(49,walk.getFrame());
         walkL.setScale(64,54);
         walkL.flipX();
         setAnimation(walkL);
 
+    }
+    public int getFrameRate(){
+        return walkL.getFrameRate();
     }
 
     public int getHealth(){

@@ -26,6 +26,7 @@ public class Child extends AnimatedActor{
         String[] frames = new String[1];
         frames[0] = "Sprites/Player_Temp.png";
         walk = new Animation(50, frames);
+        System.out.println("child");
         walk.setScale(16*4,16*4);
         setAnimation(walk);
         umbrella = new Weapon();
