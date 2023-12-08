@@ -21,7 +21,7 @@ public class Child extends AnimatedActor{
         iframes = 0;
         swingTimer = 0;
         rotation = 0.0;
-        health = new Health(10);
+        health = new Health(5);
         attack = false;
         dashCoolDown = 0;
         speed = 3;
@@ -133,6 +133,6 @@ public class Child extends AnimatedActor{
     }
 
     public boolean getAttack(){
-        return attack;
+        return swingTimer > 30;
     }
 }
