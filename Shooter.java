@@ -12,7 +12,6 @@ public class Shooter extends Walker{
         shootL.flipX();
         shootL.setScale(64,54);
         shootR = new Animation(50,shoot.getFrame());
-        shootR.flipX();
         shootR.setScale(64,54);
         super.setShoot(shootR,shootL);
         bulletArrNum = n;

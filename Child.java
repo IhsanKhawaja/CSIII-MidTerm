@@ -113,10 +113,8 @@ public class Child extends AnimatedActor{
             umbrella.idle();
         }
 
-        if(isTouching(Enemy.class) && iframes == 0){
-            health.takeDamage(1);
-            iframes = 150;
-            velocity.y = -3;
+        if(isTouching(Enemy.class)){
+            takeDamage(1);
         }
         if(iframes > 0){
             iframes--;
@@ -133,5 +131,12 @@ public class Child extends AnimatedActor{
 
     public boolean getAttack(){
         return swingTimer > 30;
+    }
+    public void takeDamage(int damage){
+        if(iframes==0) {
+            health.takeDamage(1);
+            iframes = 150;
+            velocity.y = -3;
+        }
     }
 }

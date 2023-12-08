@@ -2,8 +2,10 @@ public class Bullet extends AnimatedActor{
 
     private int lifeTime;
     private Animation bullet;
+    private Child child;
 
     public Bullet(Vector2D target,Animation bullet,Child child, Vector2D spawn) {
+        this.child = child;
         pos.x = spawn.x;
         pos.y = spawn.y;
         velocity.y = pos.ydiff(target);
@@ -27,7 +29,7 @@ public class Bullet extends AnimatedActor{
         lifeTime -=1;
         setLocation(getX() + velocity.x,getY() + velocity.y);
         if(isTouchingAtOffset(0,0,Child.class)){
-
+            child.takeDamage(1);
         }
         super.act();
     }

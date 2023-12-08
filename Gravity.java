@@ -6,7 +6,7 @@ public class Gravity extends Actor {
     public boolean grav;
     public Gravity(){
         velocity = new Vector2D();
-        pos = new Vector2D
+        pos = new Vector2D();
         grav = true;
     }
 

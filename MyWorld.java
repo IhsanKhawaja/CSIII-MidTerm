@@ -50,7 +50,7 @@ public class MyWorld extends World {
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},  
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","d"},
-                {"b","-","e2","","","","","-","-","-","-","-","-","-","-","-","e1","-","-","d"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","e1","-","-","d"},
         };
 
         String[][] room2 = new String[][]{
@@ -282,11 +282,11 @@ public class MyWorld extends World {
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
                 else if(room[i][j].equals("e1")){
-                    enemies.add(new Walker(10, crawlid, child,64,54,1,false));
+                    enemies.add(new Walker(10, crawlid, child,64,54,1));
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                 }
                 else if(room[i][j].equals("e2")){
-                    enemies.add(new Shooter(10, shooterWalk, shooterShoot, child,2,true,arrNum));
+                    enemies.add(new Shooter(10, shooterWalk, shooterShoot, child,2,arrNum));
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                     bullets.add(new Queue<Bullet>());
                     arrNum++;
