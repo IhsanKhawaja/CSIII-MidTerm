@@ -55,7 +55,7 @@ public class MyWorld extends World {
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","e1","-","e1","-","-","-","b"},
                 {"b","-","e1","-","-","-","b","b","b","b","b","b","b","b","b","b","b","b","b","b"},
                 {"b","b","b","b","-","-","-","b","-","-","-","-","-","-","-","-","-","-","b","b"},
-                {"b","-","-","-","-","-","-","b","e1","e1","e1","-","-","-","-","-","-","-","l","b"},
+                {"b","-","-","-","-","-","-","b","e1","e1","e1","e2","-","-","-","-","-","-","l","b"},
                 {"b","-","-","-","l","b","b","b","b","b","b","b","b","b","b","b","b","b","l","b"},
                 {"b","-","-","-","l","-","-","-","-","-","b","b","b","-","-","-","-","b","l","b"},
                 {"b","-","-","-","l","-","-","-","-","-","-","b","-","-","-","-","-","b","l","b"},
@@ -227,14 +227,14 @@ public class MyWorld extends World {
                     if(temp.shoot()){
                         Bullet newB = new Bullet(child.pos,bullet,child,temp.pos);
                         bullets.get(temp.getBulletArrNum()).add(newB);
-                        addObject(newB,(int) temp.pos.x,(int) temp.pos.y - 5);
+                        addObject(newB,(int) temp.pos.x,(int) temp.pos.y);
 
                     }
                 }
             }
         }
         for(int i = 0; i < bullets.size();i++){
-            if(bullets.get(i).getOldest() != null && bullets.get(i).getOldest().getLifeTime()<0){
+            if(bullets.get(i).getOldest() != null && (bullets.get(i).getOldest().getLifeTime()<0 || bullets.get(i).getOldest().isBlocked())) {
                 removeObject(bullets.get(i).getOldest());
                 bullets.get(i).remove();
             }
@@ -291,8 +291,10 @@ public class MyWorld extends World {
                 }
             }
         }
+
         for (Enemy enemy:enemies){
             removeObject(enemy);
+            enemies.remove(enemy);
         }
     }
 

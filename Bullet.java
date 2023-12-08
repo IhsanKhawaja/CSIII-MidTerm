@@ -15,11 +15,12 @@ public class Bullet extends AnimatedActor{
         velocity.y += .5f;
         grav = false;
         lifeTime = 300;
-        bullet.setScale(32,20);
+        this.bullet = new Animation(50,bullet.getFrame());
+        this.bullet.setScale(32,20);
         if(velocity.x<0){
-            bullet.flipX();
+            this.bullet.flipX();
         }
-        setAnimation(bullet);
+        setAnimation(this.bullet);
     }
     public void act(){
         pos.x = getX();
@@ -30,6 +31,9 @@ public class Bullet extends AnimatedActor{
 
         }
         super.act();
+    }
+    public boolean isBlocked(){
+        return isTouching(Wall.class);
     }
     public int getLifeTime(){
         return lifeTime;
