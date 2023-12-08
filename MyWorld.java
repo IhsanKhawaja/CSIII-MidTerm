@@ -47,7 +47,7 @@ public class MyWorld extends World {
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},  
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","d"},
-                {"b","-","e2","-","-","-","-","-","-","-","-","-","-","-","-","-","e1","-","-","d"},
+                {"b","-","e2","","","","","-","-","-","-","-","-","-","-","-","e1","-","-","d"},
         };
 
         String[][] room2 = new String[][]{
@@ -212,26 +212,26 @@ public class MyWorld extends World {
             if(child.getY() < getHeight()/2) child.setLocation(child.getX(), getHeight()-child.getHeight());
         }
         for(int i = 0; i<enemies.size();i++) {
-            if(enemies.get(i).getHealth()<=0){
+            if (enemies.get(i).getHealth() <= 0) {
                 removeObject(enemies.get(i));
                 enemies.remove(i);
-                i--;
-                if(enemies.size()==0){
+                if (enemies.size() == 0) {
                     break;
                 }
             }
+        }
+        for(int i = 0; i<enemies.size();i++){
             if(enemies.get(i).getType()==2){
                 if(enemies.get(i).getClass() == Shooter.class){
                     Shooter temp = (Shooter) enemies.get(i);
                     if(temp.shoot()){
                         Bullet newB = new Bullet(child.pos,bullet,child,temp.pos);
                         bullets.get(temp.getBulletArrNum()).add(newB);
-                        addObject(newB,(int) temp.pos.x,(int) temp.pos.y - 40);
+                        addObject(newB,(int) temp.pos.x,(int) temp.pos.y - 5);
 
                     }
                 }
             }
-
         }
         for(int i = 0; i < bullets.size();i++){
             if(bullets.get(i).getOldest() != null && bullets.get(i).getOldest().getLifeTime()<0){

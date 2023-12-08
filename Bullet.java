@@ -10,11 +10,15 @@ public class Bullet extends AnimatedActor{
         velocity.x = pos.xdiff(target);
         velocity.normalize();
         this.child = child;
-        velocity.y *= 2;
-        velocity.x *= 2;
+        velocity.x *= 4;
+        velocity.y *= 4;
+        velocity.y += .5f;
         grav = false;
         lifeTime = 300;
-        bullet.setScale(64,64);
+        bullet.setScale(32,20);
+        if(velocity.x<0){
+            bullet.flipX();
+        }
         setAnimation(bullet);
     }
     public void act(){

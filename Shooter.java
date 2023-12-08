@@ -18,7 +18,7 @@ public class Shooter extends Walker{
         shootR.setScale(64,54);
         super.setShoot(shootR,shootL);
         bulletArrNum = n;
-        bulletCool = 60;
+        bulletCool = 0;
     }
     public boolean shoot() {
         float distanceP = this.pos.distance(getChild().pos);
