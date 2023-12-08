@@ -7,14 +7,10 @@ public class Enemy extends AnimatedActor{
     private Child child;
     private int damageCool;
     private int type;
-    private Queue<Bullet> bullets;
-    public Enemy(int hp, Child child,int type,boolean is2) {
+    public Enemy(int hp, Child child,int type) {
         this.hp = new Health(hp);
         this.child = child;
         this.type = type;
-        if(is2){
-            bullets = new Queue<Bullet>();
-        }
     }
     public void act(){
         if (child.getAttack() && this.isTouching(Weapon.class) && damageCool==0) {
@@ -89,9 +85,6 @@ public class Enemy extends AnimatedActor{
     }
     public int getHealth(){
         return hp.getHealth();
-    }
-    public Queue<Bullet> getBullets(){
-        return bullets;
     }
 
 }

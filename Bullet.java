@@ -2,14 +2,13 @@ public class Bullet extends AnimatedActor{
 
     private int lifeTime;
     private Animation bullet;
-    private Child child;
+
     public Bullet(Vector2D target,Animation bullet,Child child, Vector2D spawn) {
         pos.x = spawn.x;
         pos.y = spawn.y;
         velocity.y = pos.ydiff(target);
         velocity.x = pos.xdiff(target);
         velocity.normalize();
-        this.child = child;
         velocity.x *= 4;
         velocity.y *= 4;
         velocity.y += .5f;

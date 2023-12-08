@@ -6,8 +6,8 @@ public class Shooter extends Walker{
     private int bulletArrNum;
     private int bulletCool;
 
-    public Shooter(int hp, Animation walk,Animation shoot,Child child,int type,boolean is2,int n){
-        super(hp,walk,child,64,54,type,is2);
+    public Shooter(int hp, Animation walk,Animation shoot,Child child,int type,int n){
+        super(hp,walk,child,64,54,type);
         shootL = new Animation(50,shoot.getFrame());
         shootL.flipX();
         shootL.setScale(64,54);
@@ -19,14 +19,14 @@ public class Shooter extends Walker{
         bulletCool = 0;
     }
     public boolean shoot() {
-        float distanceP = this.pos.distance(getChild().pos);
+        float distanceP = this.pos.distance(super.getChild().pos);
         if (distanceP < 250 && distanceP != 0.0) {
 
             if (velocity.x != 0) {
                 saveX = velocity.x;
             }
             velocity.x = 0;
-            if (getChild().getX() > this.getX()) {
+            if (getChild().pos.x > this.pos.x) {
                 super.setAnimation(shootR);
             } else {
                 super.setAnimation(shootL);

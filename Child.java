@@ -38,7 +38,8 @@ public class Child extends AnimatedActor{
         if(isTouchingAtOffset(0,0,Ladder.class)) velocity.y = 0;
         if(isTouchingAtOffset(0,0,Ladder.class) && Mayflower.isKeyDown(Keyboard.KEY_W)) velocity.y -= 1;
         if(isTouchingAtOffset(0,0,Ladder.class) && Mayflower.isKeyDown(Keyboard.KEY_S)) velocity.y += 1;
-
+        pos.x = getX();
+        pos.y = getY();
         if(!dash) {
             velocity.x = 0;
         }
@@ -119,7 +120,6 @@ public class Child extends AnimatedActor{
         }
         if(iframes > 0){
             iframes--;
-            System.out.println(iframes);
         }
     }
 
