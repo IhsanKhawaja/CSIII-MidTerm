@@ -1,7 +1,9 @@
 import mayflower.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyWorld extends World {
+    MyStack<InanimateObject> playerHearts;
     Wall[] floors;
     Actor[][] currentRoom;
     String[][][] rooms;
@@ -19,6 +21,7 @@ public class MyWorld extends World {
     int arrNum;
     public MyWorld()
     {
+        playerHearts = new MyStack<InanimateObject>();
         enemies = new ArrayList<>();
         frames = new String[1];
         animate(1,"Crawlid",frames,false);
@@ -65,30 +68,30 @@ public class MyWorld extends World {
         };
 
         String[][] room3 = new String[][]{
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1","e1"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
+                {"b","d","d","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","-","-","b","b","b","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","-","-","-","b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","-","-","-","b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
+                {"b","l","b","b","b","b","b","b","b","b","b","b","b","b","b","b","l","-","-","b"},
+                {"b","l","-","-","s","-","s","-","s","-","-","-","-","-","-","b","l","-","-","b"},
+                {"b","l","-","-","-","-","-","-","-","-","-","-","-","-","-","b","l","-","-","b"},
+                {"b","l","-","-","-","-","-","-","-","-","-","-","-","-","-","b","l","-","-","b"},
+                {"b","l","-","s","-","s","-","s","-","-","e1","e1","-","-","e2","b","l","-","-","b"},
         };
 
         String[][] room4 = new String[][]{
+                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","d","d"},
+                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","e1","e1","e2","-"},
+                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","c","c","c","c","c","c"},
+                {"-","e1","e2","-","-","-","-","-","-","-","-","-","-","-","-","c","c","c","c","-"},
+                {"c","c","c","c","c","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
+                {"-","c","c","c","-","-","-","-","-","-","e1","-","-","-","-","-","-","-","-","-"},
+                {"-","-","-","-","-","-","e1","-","-","c","c","c","-","-","-","-","-","-","-","-"},
+                {"-","-","-","-","-","c","c","c","-","-","-","-","-","-","-","-","-","-","-","-"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
+                {"-","-","-","-","-","-","-","-","c","c","c","-","-","-","-","-","-","-","-","-"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
         };
 
@@ -202,13 +205,16 @@ public class MyWorld extends World {
 
     public void act()
     {
+        for(int i = 0; i < playerHearts.size(); i++){
+
+        }
         if(child.door()){
             roomTally++;
             removeWorld();
             generateWorld(rooms[roomTally]);
             addObject(child, child.getX(),child.getY());
             addObject(child.umbrella, child.umbrella.getX(),child.umbrella.getY());
-            if(child.getX() > getWidth()/2) child.setLocation(64, child.getY());
+            if(child.getX() > getWidth()/2 && child.getY() > getHeight()/2) child.setLocation(64, child.getY());
             if(child.getY() < getHeight()/2) child.setLocation(child.getX(), getHeight()-child.getHeight());
         }
         for(int i = 0; i<enemies.size();i++) {
@@ -239,6 +245,10 @@ public class MyWorld extends World {
                 bullets.get(i).remove();
             }
         }
+        if(child.getHealth() <= 0){
+            removeObject(child);
+            removeObject(child.umbrella);
+        }
     }
 
     public void LetThereBeFloor(){
@@ -255,23 +265,27 @@ public class MyWorld extends World {
                     currentRoom[i][j] = new Wall("Sprites/Brick.png");
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
-                if(room[i][j].equals("i")){
+                else if(room[i][j].equals("c")){
+                    currentRoom[i][j] = new Wall("Sprites/Cloud.png");
+                    addObject(currentRoom[i][j], j*tileSize,i*tileSize);
+                }
+                else if(room[i][j].equals("i")){
                     currentRoom[i][j] = new Wall("Sprites/Brick.png", 100);
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
-                if(room[i][j].equals("l")){
+                else if(room[i][j].equals("l")){
                     currentRoom[i][j] = new Ladder("Sprites/Ladder.png");
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
-                if(room[i][j].equals("d")){
+                else if(room[i][j].equals("d")){
                     currentRoom[i][j] = new Door("Sprites/Brick.png");
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
-                if(room[i][j].equals("e1")){
+                else if(room[i][j].equals("e1")){
                     enemies.add(new Walker(10, crawlid, child,64,54,1,false));
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                 }
-                if(room[i][j].equals("e2")){
+                else if(room[i][j].equals("e2")){
                     enemies.add(new Shooter(10, shooterWalk, shooterShoot, child,2,true,arrNum));
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                     bullets.add(new Queue<Bullet>());

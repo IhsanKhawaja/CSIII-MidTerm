@@ -23,7 +23,7 @@ public class Vector2D {
     }
 
     public float distance(Vector2D target){
-        return (float)Math.sqrt(Math.pow(xdiff(target), 2) + Math.pow(ydiff(target), 2));
+        return (float )Math.sqrt(Math.pow(xdiff(target), 2) + Math.pow(ydiff(target), 2));
     }
 
     public float xdiff(Vector2D target){
