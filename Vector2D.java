@@ -14,7 +14,7 @@ public class Vector2D {
     }
 
     public Vector2D normalize(){
-        float mag = (float) Math.abs(Math.sqrt(x*x + y*y));
+        float mag = (float) (Math.sqrt(x*x + y*y));
         if(mag > 0) {
             x /= mag;
             y /= mag;

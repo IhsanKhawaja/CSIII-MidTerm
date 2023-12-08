@@ -1,16 +1,30 @@
 public class Bullet extends AnimatedActor{
 
     private int lifeTime;
-    public Bullet(Vector2D target) {
+    private Animation bullet;
+    private Child child;
+    public Bullet(Vector2D target,Animation bullet,Child child, Vector2D spawn) {
+        pos.x = spawn.x;
+        pos.y = spawn.y;
         velocity.y = pos.ydiff(target);
         velocity.x = pos.xdiff(target);
         velocity.normalize();
+        this.child = child;
         velocity.y *= 2;
         velocity.x *= 2;
+        grav = false;
         lifeTime = 300;
+        bullet.setScale(64,64);
+        setAnimation(bullet);
     }
     public void act(){
+        pos.x = getX();
+        pos.y = getY();
         lifeTime -=1;
+        setLocation(getX() + velocity.x,getY() + velocity.y);
+        if(isTouchingAtOffset(0,0,Child.class)){
+
+        }
         super.act();
     }
     public int getLifeTime(){

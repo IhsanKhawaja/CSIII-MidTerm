@@ -11,7 +11,7 @@ public class Queue<E>{
     public int size(){
         return list.size();
     }
-    public E peek(){
+    public E getOldest(){
         if(isEmpty()){
             return null;
         }
@@ -25,7 +25,7 @@ public class Queue<E>{
         list.remove(0);
         return obj;
     }
-    public boolean add(E item){
-        return list.add(item);
+    public void add(E item){
+        list.add(item);
     }
 }

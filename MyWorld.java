@@ -11,11 +11,12 @@ public class MyWorld extends World {
     Animation crawlid;
     Animation shooterWalk;
     Animation shooterShoot;
+    Animation bullet;
     String[]frames;
-    String[]frame;
-    String[]fram;
     Child child;
     MyMouse mouse;
+    ArrayList<Queue<Bullet>> bullets;
+    int arrNum;
     public MyWorld()
     {
         enemies = new ArrayList<>();
@@ -26,10 +27,14 @@ public class MyWorld extends World {
         shooterWalk = new Animation (50,frames);
         animate(1,"HornetAttack",frames,false);
         shooterShoot = new Animation(50,frames);
+        animate(1,"Bullet",frames,false);
+        bullet = new Animation(50,frames);
         roomTally = 0;
         tileSize = 64;
         rooms = new String[10][12][20];
         currentRoom = new Block[12][20];
+        bullets = new ArrayList<Queue<Bullet>>();
+        arrNum = 0;
 
         String[][] room1 = new String[][]{
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
@@ -192,8 +197,6 @@ public class MyWorld extends World {
         addObject(child, 400, 400);
         generateWorld(rooms[0]);
         addObject(child.umbrella, 400, 400);
-
-
         addObject(mouse, 0, 0);
     }
 
@@ -212,6 +215,28 @@ public class MyWorld extends World {
             if(enemies.get(i).getHealth()<=0){
                 removeObject(enemies.get(i));
                 enemies.remove(i);
+                i--;
+                if(enemies.size()==0){
+                    break;
+                }
+            }
+            if(enemies.get(i).getType()==2){
+                if(enemies.get(i).getClass() == Shooter.class){
+                    Shooter temp = (Shooter) enemies.get(i);
+                    if(temp.shoot()){
+                        Bullet newB = new Bullet(child.pos,bullet,child,temp.pos);
+                        bullets.get(temp.getBulletArrNum()).add(newB);
+                        addObject(newB,(int) temp.pos.x,(int) temp.pos.y - 40);
+
+                    }
+                }
+            }
+
+        }
+        for(int i = 0; i < bullets.size();i++){
+            if(bullets.get(i).getOldest() != null && bullets.get(i).getOldest().getLifeTime()<0){
+                removeObject(bullets.get(i).getOldest());
+                bullets.get(i).remove();
             }
         }
     }
@@ -243,12 +268,14 @@ public class MyWorld extends World {
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
                 if(room[i][j].equals("e1")){
-                    enemies.add(new Walker(10, crawlid, child,64,54));
+                    enemies.add(new Walker(10, crawlid, child,64,54,1,false));
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                 }
                 if(room[i][j].equals("e2")){
-                    enemies.add(new Shooter(10, shooterWalk, shooterShoot, child));
+                    enemies.add(new Shooter(10, shooterWalk, shooterShoot, child,2,true,arrNum));
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
+                    bullets.add(new Queue<Bullet>());
+                    arrNum++;
                 }
             }
         }

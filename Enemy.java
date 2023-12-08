@@ -2,11 +2,19 @@ public class Enemy extends AnimatedActor{
     private Health hp;
     private Animation walkR;
     private Animation walkL;
+    private Animation shootR;
+    private Animation shootL;
     private Child child;
     private int damageCool;
-    public Enemy(int hp, Child child) {
+    private int type;
+    private Queue<Bullet> bullets;
+    public Enemy(int hp, Child child,int type,boolean is2) {
         this.hp = new Health(hp);
         this.child = child;
+        this.type = type;
+        if(is2){
+            bullets = new Queue<Bullet>();
+        }
     }
     public void act(){
         if (child.getAttack() && this.isTouching(Weapon.class) && damageCool==0) {
@@ -15,11 +23,9 @@ public class Enemy extends AnimatedActor{
         }
         if(damageCool>0) {
             if(damageCool == 18){
-                walkR.SetTransparency(75);
-                walkL.SetTransparency(75);
+                setTransparency(75);
             }else if(damageCool == 1){
-                walkR.SetTransparency(0);
-                walkL.SetTransparency(0);
+                setTransparency(0);
             }
             damageCool -= 1;
         }
@@ -38,10 +44,26 @@ public class Enemy extends AnimatedActor{
     public Child getChild(){
         return child;
     }
+    public void setTransparency(int transparency){
+        if(walkL != null){
+            walkL.SetTransparency(transparency);
+        }
+        if(walkR != null){
+            walkR.SetTransparency(transparency);
+        }
+        if(shootR != null){
+            shootR.SetTransparency(transparency);
+        }
+        if(shootL != null){
+            shootL.SetTransparency(transparency);
+        }
+    }
+    public int getType(){
+        return type;
+    }
     public void shouldTurningW() {
         if (isTouchingAtOffset( ((int) velocity.x / 2) * getWidth() / 2, 0, Wall.class) ||
-                isTouchingAtOffset(((int) velocity.x / 2) * getWidth() / 2, 0 , Door.class) ||
-                !isTouchingAtOffset(((int) velocity.x / 2) * getWidth() / 2, getHeight() , Wall.class)){
+                isTouchingAtOffset(((int) velocity.x / 2) * getWidth() / 2, 0 , Door.class)){
             velocity.x = -velocity.x;
             if(velocity.x > 0) setAnimation(1);
             if(velocity.x < 0) setAnimation(2);
@@ -62,9 +84,16 @@ public class Enemy extends AnimatedActor{
     public int getFrameRate(){
         return walkL.getFrameRate();
     }
-
+    public void setShoot(Animation R,Animation L){
+        shootR = R;
+        shootL = L;
+    }
     public int getHealth(){
         return hp.getHealth();
     }
+    public Queue<Bullet> getBullets(){
+        return bullets;
+    }
+
 }
 
