@@ -76,9 +76,7 @@ public class Enemy extends AnimatedActor{
         setAnimation(walkL);
 
     }
-    public int getFrameRate(){
-        return walkL.getFrameRate();
-    }
+
     public void setShoot(Animation R,Animation L){
         shootR = R;
         shootL = L;

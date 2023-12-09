@@ -14,6 +14,7 @@ public class MyWorld extends World {
     Animation shooterWalk;
     Animation shooterShoot;
     Animation bullet;
+    Animation nimbus;
     String[]frames;
     Child child;
     MyMouse mouse;
@@ -32,6 +33,8 @@ public class MyWorld extends World {
         shooterShoot = new Animation(50,frames);
         animate(1,"Bullet",frames,false);
         bullet = new Animation(50,frames);
+        animate(1,"Nimbus",frames,false);
+        nimbus = new Animation(50,frames);
         roomTally = 0;
         tileSize = 64;
         rooms = new String[10][12][20];
@@ -236,6 +239,15 @@ public class MyWorld extends World {
                         addObject(newB,(int) temp.pos.x,(int) temp.pos.y);
 
                     }
+                }else if(enemies.get(i).getClass() == FlyingShooter.class){
+                    FlyingShooter temp = (FlyingShooter) enemies.get(i);
+                    if(temp.shoot()){
+                        System.out.println("Shoot Passes");
+                        Bullet newB = new Bullet(child.pos,bullet,child,temp.pos);
+                        bullets.get(temp.getBulletArrNum()).add(newB);
+                        addObject(newB,(int) temp.pos.x,(int) temp.pos.y);
+
+                    }
                 }
             }
         }
@@ -290,6 +302,11 @@ public class MyWorld extends World {
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                     bullets.add(new Queue<Bullet>());
                     arrNum++;
+                }else if(room[i][j].equals("e3")){
+                    enemies.add(new FlyingShooter(10, child,2,nimbus,arrNum));
+                    addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
+                    bullets.add(new Queue<Bullet>());
+                    arrNum++;
                 }
             }
         }
@@ -308,8 +325,9 @@ public class MyWorld extends World {
 
         for (Enemy enemy:enemies){
             removeObject(enemy);
-            enemies.remove(enemy);
+
         }
+        enemies=new ArrayList<Enemy>();
     }
 
     public void animate(int nFrame, String fName, String[] frames, boolean more1){
