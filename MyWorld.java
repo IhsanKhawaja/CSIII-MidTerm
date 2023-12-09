@@ -15,6 +15,7 @@ public class MyWorld extends World {
     Animation shooterShoot;
     Animation bullet;
     Animation nimbus;
+    Animation gameOver;
     String[]frames;
     Child child;
     MyMouse mouse;
@@ -35,6 +36,9 @@ public class MyWorld extends World {
         bullet = new Animation(50,frames);
         animate(1,"Nimbus",frames,false);
         nimbus = new Animation(50,frames);
+        animate(1,"GameOver",frames,false);
+        gameOver = new Animation(50,frames);
+        gameOver.setScale(1280,720);
         roomTally = 0;
         tileSize = 64;
         rooms = new String[10][12][20];
@@ -260,6 +264,9 @@ public class MyWorld extends World {
         if(child.getHealth() <= 0){
             removeObject(child);
             removeObject(child.umbrella);
+            AnimatedActor gameOverScreen = new AnimatedActor();
+            gameOverScreen.setAnimation(gameOver);
+            addObject(gameOverScreen,0,0);
         }
     }
 
