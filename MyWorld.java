@@ -21,6 +21,11 @@ public class MyWorld extends World {
     MyMouse mouse;
     ArrayList<Queue<Bullet>> bullets;
     int arrNum;
+    /*
+        Sets enemies to a new ArrayList
+        Animates all the enemies walking, shooting, idling, shooting, and the game over screen
+        Creates the bullets ArrayList and sets the array number to 0
+     */
     public MyWorld()
     {
         playerHearts = new MyStack<InanimateObject>();
@@ -209,7 +214,10 @@ public class MyWorld extends World {
         addObject(child.umbrella, 400, 400);
         addObject(mouse, 0, 0);
     }
+    /*
 
+    
+     */
     public void act()
     {
         for(int i = 0; i < playerHearts.size(); i++){
@@ -318,7 +326,11 @@ public class MyWorld extends World {
             }
         }
     }
+    /*
 
+    For each enemy that currently exists it removes it from the world
+    Makes the enemies array into a new empty ArrayList
+     */
     public void removeWorld(){
         for(int i = 0; i < currentRoom.length; i++){
             for(int j = 0; j < currentRoom[i].length; j++){
@@ -336,7 +348,10 @@ public class MyWorld extends World {
         }
         enemies=new ArrayList<Enemy>();
     }
-
+    /*
+        If more1 is true sets each index of frames to the png
+        If more1 is false it sets 1 index of frames to the png
+     */
     public void animate(int nFrame, String fName, String[] frames, boolean more1){
         if(more1){
             for(int i = 0;i < nFrame;i++){

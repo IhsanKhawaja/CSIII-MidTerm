@@ -3,7 +3,14 @@ public class Bullet extends AnimatedActor{
     private int lifeTime;
     private Animation bullet;
     private Child child;
-
+    /*
+        Sets the child variable to be equal to the player
+        Sets the position of the bullet to be the location of the enemy that is shooting it
+        Sets the velocity of the bullet to go towards the position of the player
+        Sets the gravity to false and the lifetime to 300 frames
+        Sets the animation of the bullet and the scale and if it is going to the left it flips the animation
+        Sets the bullets animation to the new animation
+     */
     public Bullet(Vector2D target,Animation bullet,Child child, Vector2D spawn) {
         this.child = child;
         pos.x = spawn.x;
@@ -23,6 +30,12 @@ public class Bullet extends AnimatedActor{
         }
         setAnimation(this.bullet);
     }
+    /*
+        Updates the position of the bullet and decreases the lifetime by 1
+        Changes the position of the bullet and checks if it is touching the child
+        If it is touching the child makes the child take 1 damage
+        Calls super.act()
+     */
     public void act(){
         pos.x = getX();
         pos.y = getY();
@@ -33,9 +46,15 @@ public class Bullet extends AnimatedActor{
         }
         super.act();
     }
+    /*
+        Returns true if the bullet is touching a block and false otherwise
+     */
     public boolean isBlocked(){
-        return isTouching(Wall.class);
+        return isTouching(Block.class);
     }
+    /*
+        Returns the remaining lifetime of the bullet
+     */
     public int getLifeTime(){
         return lifeTime;
     }
