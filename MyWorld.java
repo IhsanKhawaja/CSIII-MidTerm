@@ -216,7 +216,11 @@ public class MyWorld extends World {
     }
     /*
 
-    
+        Checks if any enemie in enemies is at 0 or less health and removes them from the world and the list if they are
+        Checks if any enemies are able to shoot (Shooter and Flying Shooter enemies, if they are checks if shoot is true for that enemy if it is then adds a bullet to the queue specific to that enemy in the bullets ArrayList
+        and adds that bullet to the game
+        Checks if the oldest bullet in the Queue for any of the enemies is past its lifetime or touching a wall and then removes it from the game if it is 
+        Checks if the players health is less than zero if it is removes the player and their weapon from the game and displays the game over screen
      */
     public void act()
     {
@@ -254,7 +258,6 @@ public class MyWorld extends World {
                 }else if(enemies.get(i).getClass() == FlyingShooter.class){
                     FlyingShooter temp = (FlyingShooter) enemies.get(i);
                     if(temp.shoot()){
-                        System.out.println("Shoot Passes");
                         Bullet newB = new Bullet(child.pos,bullet,child,temp.pos);
                         bullets.get(temp.getBulletArrNum()).add(newB);
                         addObject(newB,(int) temp.pos.x,(int) temp.pos.y);
