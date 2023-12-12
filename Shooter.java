@@ -45,7 +45,7 @@ public class Shooter extends Walker{
             } else {
                 super.setAnimation(shootL);
             }
-            if (bulletCool == 60) {
+            if (bulletCool == 90) {
                 bulletCool = 0;
                 return true;
             }
@@ -62,7 +62,7 @@ public class Shooter extends Walker{
 
 
         }
-        if (bulletCool != 60) {
+        if (bulletCool != 90) {
             bulletCool++;
         }
         return false;

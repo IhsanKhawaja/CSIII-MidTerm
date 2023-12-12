@@ -32,12 +32,12 @@ public class FlyingShooter extends Enemy{
     public boolean shoot() {
         float distanceP = this.pos.distance(super.getChild().pos);
         if (distanceP < 500 && distanceP != 0.0) {
-            if (bulletCool == 60) {
+            if (bulletCool == 90) {
                 bulletCool = 0;
                 return true;
             }
         }
-        if (bulletCool != 60) {
+        if (bulletCool != 90) {
             bulletCool++;
         }
         return false;

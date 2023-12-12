@@ -50,7 +50,7 @@ public class Bullet extends AnimatedActor{
         Returns true if the bullet is touching a block and false otherwise
      */
     public boolean isBlocked(){
-        return isTouching(Block.class);
+        return isTouching(Block.class) || isTouchingAtOffset(0,(5*getHeight())/6 ,Block.class);
     }
     /*
         Returns the remaining lifetime of the bullet
