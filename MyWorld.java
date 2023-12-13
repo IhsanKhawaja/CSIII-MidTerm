@@ -224,9 +224,19 @@ public class MyWorld extends World {
      */
     public void act()
     {
-        for(int i = 0; i < playerHearts.size(); i++){
-
+        if(playerHearts.size() < child.getHealth()) {
+            for (int i = 0; i < child.getHealth(); i++) {
+                String[] frame = new String[1];
+                frame[0] = "Sprites/Heart.png";
+                playerHearts.push(new InanimateObject(frame));
+                playerHearts.peek().getAnimation().setScale(32,32);
+                addObject(playerHearts.peek(), i * tileSize + 20, 20);
+            }
+        } else if(playerHearts.size() > child.getHealth()) {
+            removeObject(playerHearts.peek());
+            playerHearts.pop();
         }
+        
         if(child.door()){
             roomTally++;
             removeWorld();
@@ -283,7 +293,11 @@ public class MyWorld extends World {
 
     public void LetThereBeFloor(){
         for(int i = 0; i < floors.length; i++){
-            floors[i] = new Wall("Sprites/Brick.png");
+            if(roomTally < 3){
+                floors[i] = new Wall("Sprites/Brick.png");
+            } else {
+                floors[i] = new Wall("Sprites/Cloud.png");
+            }
             addObject(floors[i], i*tileSize,getHeight()-20);
         }
     }
