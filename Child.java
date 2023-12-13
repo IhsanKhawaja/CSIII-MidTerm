@@ -16,8 +16,10 @@ public class Child extends AnimatedActor{
     private double rotation;
     private Health health;
     private int iframes;
+    private int score;
 
     public Child (MyMouse mouse){
+        score = 0;
         iframes = 0;
         swingTimer = 0;
         rotation = 0.0;
@@ -128,6 +130,9 @@ public class Child extends AnimatedActor{
     public boolean door(){
         return isTouchingAtOffset(0,getHeight()/4,Door.class);
     }
+    public boolean drop(){
+        return isTouching(Raindrop.class);
+    }
 
     public boolean getAttack(){
         return swingTimer > 30;
@@ -138,5 +143,13 @@ public class Child extends AnimatedActor{
             iframes = 150;
             velocity.y = -3;
         }
+    }
+
+    public void addScore(int score){
+        this.score += score;
+    }
+
+    public int getScore(){
+        return score;
     }
 }
