@@ -29,6 +29,7 @@ public class MyWorld extends World {
     boolean game;
     boolean restart;
     Vector2D startPos;
+    Wall titleObj;
 
     int arrNum;
     /*
@@ -190,7 +191,7 @@ public class MyWorld extends World {
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","e2","-","-"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c","c","-","-"},
                 {"d","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
-                {"d","-","-","-","-","-","-","-","-","-","-","-","-","e1","e1","e1","e1","e1","-","-"},
+                {"d","e1","e1","e1","e1","e1","-","-","-","-","-","-","-","-","-","-","-","-","-","-"},
         };
 
         String[][] room10 = new String[][]{
@@ -224,7 +225,10 @@ public class MyWorld extends World {
         child = new Child(mouse);
         floors = new Wall[getWidth()/tileSize];
         button2 = new StartButton();
+        titleObj = new Wall("Sprites/Waterlogged.png");
 
+        addObject(titleObj, 1280/2 - 250,720/3);
+        showText("Waterlogged", 64,1280/2 - 170,720/3 + 64, Color.BLACK);
         addObject(button2,1280/2 - 144,720/2 - (51/2));
         addObject(mouse, 0, 0);
     }
@@ -238,6 +242,9 @@ public class MyWorld extends World {
      */
     public void act()
     {
+        /*
+        handles the start screen and its buttons
+         */
         button2.setAnimation(1);
         if (button2 != null && button2.isBlocked() || restart) {
             button2.setAnimation(2);
@@ -247,13 +254,15 @@ public class MyWorld extends World {
                 generateWorld(rooms[0]);
                 addObject(child.umbrella, 400, 400);
                 removeObject(button2);
+                removeObject(titleObj);
+                removeText(1280/2 - 170,720/3 + 64);
                 game = true;
                 restart = false;
             }
         }
         if(game) {
             if (playerHearts.size() < child.getHealth()) {
-                for (int i = 0; i < child.getHealth(); i++) {
+                for (int i = playerHearts.size(); i < child.getHealth(); i++) {
                     String[] frame = new String[1];
                     frame[0] = "Sprites/Heart.png";
                     playerHearts.push(new InanimateObject(frame));
@@ -268,6 +277,7 @@ public class MyWorld extends World {
             if (child.drop()) {
                 removeObject(drop);
                 child.addScore(5);
+                child.setHealth(child.getHealth() + 1);
             }
 
             if (child.door()) {
@@ -333,22 +343,11 @@ public class MyWorld extends World {
                 addObject(gameOverScreen, 0, 0);
                 button = new StartButton();
                 addObject(button, 496, 540);
-                bullets=new ArrayList<Queue<Bullet>>();
             }
 
             if (button != null && button.isBlocked()) {
                 button.setAnimation(2);
                 if (Mayflower.mouseClicked(button)) {
-                /*
-                removeObject(button);
-                roomTally = 0;
-                LetThereBeFloor();
-                generateWorld(rooms[roomTally]);
-                child.setHealth(5);
-                addObject(child, 400, 400);
-                addObject(child.umbrella,400,400);
-                removeObject(gameOverScreen);
-                */
                     mayflower.restart();
                 }
             } else if (button != null) {

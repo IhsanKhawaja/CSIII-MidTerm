@@ -4,8 +4,8 @@ import mayflower.*;
 public class Child extends AnimatedActor{
     public Weapon umbrella;
     private final Animation walk;
-    private Animation jump;
-    private Animation idle;
+    private final Animation walkL;
+    private final Animation idle;
     private final int speed;
     private int dashCoolDown;
     private boolean dash;
@@ -29,9 +29,18 @@ public class Child extends AnimatedActor{
         speed = 3;
         String[] frames = new String[1];
         frames[0] = "Sprites/Player_Temp.png";
-        walk = new Animation(50, frames);
-        walk.setScale(16*4,16*4);
-        setAnimation(walk);
+        idle = new Animation(50, frames);
+        String[] framess = new String[1];
+        framess[0] = "Sprites/PlayerWalk.png";
+        String[] framesss = new String[1];
+        framesss[0] = "Sprites/PlayerWalk.png";
+        walk = new Animation(50, framess);
+        walkL = new Animation(50, framess);
+        walk.flipX();
+        idle.setScale(16*4,16*4);
+        walk.setScale(64,64);
+        walkL.setScale(64,64);
+        setAnimation(idle);
         umbrella = new Weapon();
         this.mouse = mouse;
     }
@@ -94,6 +103,14 @@ public class Child extends AnimatedActor{
             velocity.y = 0;
         }
         setLocation(getX()+velocity.x*speed, getY()+ velocity.y*speed);
+        if(velocity.x > 0){
+            setAnimation(walkL);
+        } else if (velocity.x < 0){
+            setAnimation(walk);
+        } else {
+            setAnimation(idle);
+        }
+
         super.act();
 
         if (dashCoolDown >= 0) dashCoolDown--;
