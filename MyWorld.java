@@ -20,11 +20,14 @@ public class MyWorld extends World {
     Child child;
     MyMouse mouse;
     ArrayList<Queue<Bullet>> bullets;
+    StartButton button;
+    Boolean isDead;
+
     int arrNum;
     /*
         Sets enemies to a new ArrayList
         Animates all the enemies walking, shooting, idling, shooting, and the game over screen
-        Creates the bullets ArrayList and sets the array number to 0
+        Creates the bullets ArrayList and sets the array number to 0 and sets isDead to false
      */
     public MyWorld()
     {
@@ -50,6 +53,7 @@ public class MyWorld extends World {
         currentRoom = new Block[12][20];
         bullets = new ArrayList<Queue<Bullet>>();
         arrNum = 0;
+        isDead = false;
 
         String[][] room1 = new String[][]{
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
@@ -220,7 +224,7 @@ public class MyWorld extends World {
         Checks if any enemies are able to shoot (Shooter and Flying Shooter enemies, if they are checks if shoot is true for that enemy if it is then adds a bullet to the queue specific to that enemy in the bullets ArrayList
         and adds that bullet to the game
         Checks if the oldest bullet in the Queue for any of the enemies is past its lifetime or touching a wall and then removes it from the game if it is 
-        Checks if the players health is less than zero if it is removes the player and their weapon from the game and displays the game over screen
+        Checks if the players health is less than zero if it is removes the player and their weapon from the game and displays the game over screen with a restart button
      */
     public void act()
     {
@@ -282,12 +286,28 @@ public class MyWorld extends World {
                 bullets.get(i).remove();
             }
         }
-        if(child.getHealth() <= 0){
+
+        if(child.getHealth() <= 0 && !isDead){
+            isDead = true;
             removeObject(child);
             removeObject(child.umbrella);
             AnimatedActor gameOverScreen = new AnimatedActor();
             gameOverScreen.setAnimation(gameOver);
             addObject(gameOverScreen,0,0);
+            button = new StartButton();
+            addObject(button,496,540);
+        }
+
+        if(button != null && button.isBlocked()){
+            button.setAnimation(2);
+            if(Mayflower.mouseClicked(button)){
+                removeObject(button);
+                roomTally = 0;
+                generateWorld(rooms[roomTally]);
+                child = new Child(mouse);
+            }
+        }else if(button != null){
+            button.setAnimation(1);
         }
     }
 
