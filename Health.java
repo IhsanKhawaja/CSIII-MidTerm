@@ -10,9 +10,12 @@ public class Health {
         Reduces hp by inputted int
      */
     public void takeDamage(int damage) {
-
         hp -= damage;
     }
+    public void setHealth(int health) {
+        hp = health;
+    }
+
     /*
         Returns hp
      */

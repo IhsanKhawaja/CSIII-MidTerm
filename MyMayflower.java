@@ -24,7 +24,14 @@ public class MyMayflower extends Mayflower
         Mayflower.showBounds(true);
         Mayflower.setFullScreen(false);
         Mayflower.showCursor(false);
-        World w =  new MyWorld();
+        World w =  new MyWorld(this, false);
+        Mayflower.setWorld(w);
+    }
+    public void restart(){
+        Mayflower.showBounds(true);
+        Mayflower.setFullScreen(false);
+        Mayflower.showCursor(false);
+        World w =  new MyWorld(this, true);
         Mayflower.setWorld(w);
     }
 }

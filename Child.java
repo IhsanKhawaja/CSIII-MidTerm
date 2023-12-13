@@ -145,6 +145,10 @@ public class Child extends AnimatedActor{
         }
     }
 
+    public void setHealth(int health) {
+        this.health.setHealth(health);
+    }
+
     public void addScore(int score){
         this.score += score;
     }

@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MyWorld extends World {
+    MyMayflower mayflower;
+    AnimatedActor gameOverScreen;
     MyStack<InanimateObject> playerHearts;
     Raindrop drop;
     Wall[] floors;
@@ -22,7 +24,11 @@ public class MyWorld extends World {
     MyMouse mouse;
     ArrayList<Queue<Bullet>> bullets;
     StartButton button;
-    Boolean isDead;
+    StartButton button2;
+    boolean isDead;
+    boolean game;
+    boolean restart;
+    Vector2D startPos;
 
     int arrNum;
     /*
@@ -30,8 +36,12 @@ public class MyWorld extends World {
         Animates all the enemies walking, shooting, idling, shooting, and the game over screen
         Creates the bullets ArrayList and sets the array number to 0 and sets isDead to false
      */
-    public MyWorld()
+    public MyWorld(MyMayflower mayflower, boolean restart)
     {
+        startPos = new Vector2D();
+        this.restart = restart;
+        this.mayflower = mayflower;
+        gameOverScreen = new AnimatedActor();
         playerHearts = new MyStack<InanimateObject>();
         enemies = new ArrayList<>();
         frames = new String[1];
@@ -55,6 +65,7 @@ public class MyWorld extends World {
         bullets = new ArrayList<Queue<Bullet>>();
         arrNum = 0;
         isDead = false;
+        game = false;
 
         String[][] room1 = new String[][]{
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
@@ -155,8 +166,8 @@ public class MyWorld extends World {
         };
 
         String[][] room8 = new String[][]{
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","d"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","e3","-","-","-","-","d"},
+                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","d","d"},
+                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","e3","-","-","-","-","-"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c","c"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","e3","-","-","-","-","c","c","c"},
                 {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c","c","c","c"},
@@ -212,11 +223,9 @@ public class MyWorld extends World {
         mouse = new MyMouse();
         child = new Child(mouse);
         floors = new Wall[getWidth()/tileSize];
+        button2 = new StartButton();
 
-        LetThereBeFloor();
-        addObject(child, 400, 400);
-        generateWorld(rooms[0]);
-        addObject(child.umbrella, 400, 400);
+        addObject(button2,1280/2 - 144,720/2 - (51/2));
         addObject(mouse, 0, 0);
     }
     /*
@@ -229,97 +238,134 @@ public class MyWorld extends World {
      */
     public void act()
     {
-        if(playerHearts.size() < child.getHealth()) {
-            for (int i = 0; i < child.getHealth(); i++) {
-                String[] frame = new String[1];
-                frame[0] = "Sprites/Heart.png";
-                playerHearts.push(new InanimateObject(frame));
-                playerHearts.peek().getAnimation().setScale(32,32);
-                addObject(playerHearts.peek(), i * tileSize + 20, 20);
+        button2.setAnimation(1);
+        if (button2 != null && button2.isBlocked() || restart) {
+            button2.setAnimation(2);
+            if (Mayflower.mouseDown(button2) || restart) {
+                LetThereBeFloor();
+                addObject(child, 400, 400);
+                generateWorld(rooms[0]);
+                addObject(child.umbrella, 400, 400);
+                removeObject(button2);
+                game = true;
+                restart = false;
             }
-        } else if(playerHearts.size() > child.getHealth()) {
-            removeObject(playerHearts.peek());
-            playerHearts.pop();
         }
-
-        if(child.drop()){
-            removeObject(drop);
-            child.addScore(5);
-        }
-
-        if(child.door()){
-            roomTally++;
-            removeWorld();
-            generateWorld(rooms[roomTally]);
-            addObject(child, child.getX(),child.getY());
-            addObject(child.umbrella, child.umbrella.getX(),child.umbrella.getY());
-            if(child.getX() > getWidth()/2 && child.getY() > getHeight()/2) child.setLocation(64, child.getY());
-            if(child.getY() < getHeight()/2) child.setLocation(child.getX(), getHeight()-child.getHeight());
-        }
-        for(int i = 0; i<enemies.size();i++) {
-            if (enemies.get(i).getHealth() <= 0) {
-                child.addScore(1);
-                removeObject(enemies.get(i));
-                enemies.remove(i);
-                if (enemies.size() == 0) {
-                    break;
+        if(game) {
+            if (playerHearts.size() < child.getHealth()) {
+                for (int i = 0; i < child.getHealth(); i++) {
+                    String[] frame = new String[1];
+                    frame[0] = "Sprites/Heart.png";
+                    playerHearts.push(new InanimateObject(frame));
+                    playerHearts.peek().getAnimation().setScale(32, 32);
+                    addObject(playerHearts.peek(), i * tileSize + 20, 20);
                 }
+            } else if (playerHearts.size() > child.getHealth()) {
+                removeObject(playerHearts.peek());
+                playerHearts.pop();
             }
-        }
-        for(int i = 0; i<enemies.size();i++){
-            if(enemies.get(i).getType()==2){
-                if(enemies.get(i).getClass() == Shooter.class){
-                    Shooter temp = (Shooter) enemies.get(i);
-                    if(temp.shoot()){
-                        Bullet newB = new Bullet(child.pos,bullet,child,temp.pos);
-                        bullets.get(temp.getBulletArrNum()).add(newB);
-                        addObject(newB,(int) temp.pos.x,(int) temp.pos.y);
 
-                    }
-                }else if(enemies.get(i).getClass() == FlyingShooter.class){
-                    FlyingShooter temp = (FlyingShooter) enemies.get(i);
-                    if(temp.shoot()){
-                        Bullet newB = new Bullet(child.pos,bullet,child,temp.pos);
-                        bullets.get(temp.getBulletArrNum()).add(newB);
-                        addObject(newB,(int) temp.pos.x,(int) temp.pos.y);
+            if (child.drop()) {
+                removeObject(drop);
+                child.addScore(5);
+            }
 
+            if (child.door()) {
+                roomTally++;
+                removeWorld();
+                generateWorld(rooms[roomTally]);
+                addObject(child, child.getX(), child.getY());
+                addObject(child.umbrella, child.umbrella.getX(), child.umbrella.getY());
+                if (child.getX() > getWidth() / 2 && child.getY() > getHeight() / 2)
+                    child.setLocation(64, child.getY());
+                if (child.getY() < getHeight() / 2) child.setLocation(child.getX(), getHeight() - child.getHeight() - 30);
+                child.velocity = new Vector2D();
+                startPos = new Vector2D(child.getX(), child.getY());
+            }
+            for (int i = 0; i < enemies.size(); i++) {
+                if (enemies.get(i).getHealth() <= 0) {
+                    child.addScore(1);
+                    removeObject(enemies.get(i));
+                    enemies.remove(i);
+                    if (enemies.isEmpty()) {
+                        break;
                     }
                 }
             }
-        }
-        for(int i = 0; i < bullets.size();i++){
-            if(bullets.get(i).getOldest() != null && (bullets.get(i).getOldest().getLifeTime()<0 || bullets.get(i).getOldest().isBlocked())) {
-                removeObject(bullets.get(i).getOldest());
-                bullets.get(i).remove();
+            for (int i = 0; i < enemies.size(); i++) {
+                if (enemies.get(i).getType() == 2) {
+                    if (enemies.get(i).getClass() == Shooter.class) {
+                        Shooter temp = (Shooter) enemies.get(i);
+                        if (temp.shoot()) {
+                            Bullet newB = new Bullet(child.pos, bullet, child, temp.pos);
+                            bullets.get(temp.getBulletArrNum()).add(newB);
+                            addObject(newB, (int) temp.pos.x, (int) temp.pos.y);
+
+                        }
+                    } else if (enemies.get(i).getClass() == FlyingShooter.class) {
+                        FlyingShooter temp = (FlyingShooter) enemies.get(i);
+                        if (temp.shoot()) {
+                            Bullet newB = new Bullet(child.pos, bullet, child, temp.pos);
+                            bullets.get(temp.getBulletArrNum()).add(newB);
+                            addObject(newB, (int) temp.pos.x, (int) temp.pos.y);
+
+                        }
+                    }
+                }
             }
-        }
+            for (int i = 0; i < bullets.size(); i++) {
+                if (bullets.get(i).getOldest() != null && (bullets.get(i).getOldest().getLifeTime() < 0 || bullets.get(i).getOldest().isBlocked())) {
+                    removeObject(bullets.get(i).getOldest());
+                    bullets.get(i).remove();
+                }
+            }
 
-        if(child.getHealth() <= 0 && !isDead){
-            isDead = true;
-            removeObject(child);
-            removeObject(child.umbrella);
-            AnimatedActor gameOverScreen = new AnimatedActor();
-            gameOverScreen.setAnimation(gameOver);
-            addObject(gameOverScreen,0,0);
-            button = new StartButton();
-            addObject(button,496,540);
-        }
+            if(child.getX() < -child.getWidth() || child.getX() > 1280 || child.getY() > getHeight()){
+                child.setLocation(startPos.x, startPos.y);
+                showText("Nuh - uh", 100, 1280/3, 720/2, Color.BLACK);
+            }
 
-        if(button != null && button.isBlocked()){
-            button.setAnimation(2);
-            if(Mayflower.mouseClicked(button)){
+            if (child.getHealth() <= 0 && !isDead) {
+                isDead = true;
+                removeObject(child);
+                removeObject(child.umbrella);
+                gameOverScreen.setAnimation(gameOver);
+                addObject(gameOverScreen, 0, 0);
+                button = new StartButton();
+                addObject(button, 496, 540);
+                bullets=new ArrayList<Queue<Bullet>>();
+            }
+
+            if (button != null && button.isBlocked()) {
+                button.setAnimation(2);
+                if (Mayflower.mouseClicked(button)) {
+                /*
                 removeObject(button);
                 roomTally = 0;
+                LetThereBeFloor();
                 generateWorld(rooms[roomTally]);
-                child = new Child(mouse);
+                child.setHealth(5);
+                addObject(child, 400, 400);
+                addObject(child.umbrella,400,400);
+                removeObject(gameOverScreen);
+                */
+                    mayflower.restart();
+                }
+            } else if (button != null) {
+                button.setAnimation(1);
             }
-        }else if(button != null){
-            button.setAnimation(1);
+            if(!isDead) {
+                showText("Score: " + child.getScore(), 20, tileSize + tileSize / 2, Color.BLACK);
+            } else {
+                removeText(20, tileSize + tileSize / 2);
+                showText("Final Score: " + child.getScore(), button.getX(),  720/2 + 720/3 + 720/10, Color.BLACK);
+            }
         }
-
-        showText("Score: " + child.getScore(), 20,tileSize + tileSize/2, Color.BLACK);
     }
-
+    /*
+    Generates the floor, sets it to bricks if its below level 3
+    otherwise it sets it to clouds.
+     */
     public void LetThereBeFloor(){
         for(int i = 0; i < floors.length; i++){
             if(roomTally < 3){
@@ -377,6 +423,10 @@ public class MyWorld extends World {
                 }
             }
         }
+        for(int i = 0; i < floors.length; i++){
+            removeObject(floors[i]);
+        }
+        LetThereBeFloor();
         for(int i = 0; i < child.getHealth(); i++){
             removeObject(playerHearts.peek());
             playerHearts.pop();
@@ -388,6 +438,7 @@ public class MyWorld extends World {
     Makes the enemies array into a new empty ArrayList
      */
     public void removeWorld(){
+        removeText(1280/3, 720/2);
         for(int i = 0; i < currentRoom.length; i++){
             for(int j = 0; j < currentRoom[i].length; j++){
                 if(currentRoom[i][j] != null){
