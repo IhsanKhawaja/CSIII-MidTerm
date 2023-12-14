@@ -1,5 +1,5 @@
 public class Door extends Block{
     public Door(String img){
-        super(img,100);
+        super(img,0);
     }
 }
