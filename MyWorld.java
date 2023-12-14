@@ -354,8 +354,14 @@ public class MyWorld extends World {
                 addObject(gameOverScreen, 0, 0);
                 button = new StartButton();
                 addObject(button, 496, 540);
+            }else if(child.getScore()>1 && !isDead){
+                isDead = true;
+                removeWorld();
+                gameOverScreen.setAnimation(youWin);
+                addObject(gameOverScreen, 0, 0);
+                button = new StartButton();
+                addObject(button, 496, 540);
             }
-
             if (button != null && button.isBlocked()) {
                 button.setAnimation(2);
                 if (Mayflower.mouseClicked(button)) {
