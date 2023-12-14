@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MyWorld extends World {
+    boolean once;
     MyMayflower mayflower;
     AnimatedActor gameOverScreen;
     MyStack<InanimateObject> playerHearts;
@@ -30,6 +31,8 @@ public class MyWorld extends World {
     boolean restart;
     Vector2D startPos;
     Wall titleObj;
+    Boss boss;
+    private InanimateObject clouds;
 
     int arrNum;
     /*
@@ -39,6 +42,8 @@ public class MyWorld extends World {
      */
     public MyWorld(MyMayflower mayflower, boolean restart)
     {
+        once = true;
+        boss = new Boss(child, this);
         startPos = new Vector2D();
         this.restart = restart;
         this.mayflower = mayflower;
@@ -67,6 +72,8 @@ public class MyWorld extends World {
         arrNum = 0;
         isDead = false;
         game = false;
+        clouds = new InanimateObject(new String[]{"Sprites/Cloudy_Background.png"});
+        clouds.getAnimation().setScale(1280, 1280*2);
 
         String[][] room1 = new String[][]{
                 {"b","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","b"},
@@ -199,13 +206,13 @@ public class MyWorld extends World {
                 {"c","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
                 {"c","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
                 {"c","-","c","c","c","c","-","-","-","-","-","-","-","-","c","c","c","c","-","c"},
-                {"c","-","-","c","c","-","-","-","-","-","-","-","-","-","-","c","c","-","-","c"},
+                {"c","-","-","c","c","-","-","-","-","e4","-","-","-","-","-","c","c","-","-","c"},
                 {"c","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
                 {"c","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
                 {"c","-","-","-","c","c","c","c","-","-","-","-","c","c","c","c","-","-","-","c"},
                 {"c","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
-                {"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
+                {"i","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
+                {"i","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","c"},
         };
 
         rooms[0] = room1;
@@ -242,6 +249,12 @@ public class MyWorld extends World {
      */
     public void act()
     {
+        if(Mayflower.isKeyPressed(Keyboard.KEY_B)){
+            roomTally = 9;
+            removeWorld();
+            generateWorld(rooms[roomTally]);
+        }
+
         /*
         handles the start screen and its buttons
          */
@@ -284,8 +297,6 @@ public class MyWorld extends World {
                 roomTally++;
                 removeWorld();
                 generateWorld(rooms[roomTally]);
-                addObject(child, child.getX(), child.getY());
-                addObject(child.umbrella, child.umbrella.getX(), child.umbrella.getY());
                 if (child.getX() > getWidth() / 2 && child.getY() > getHeight() / 2)
                     child.setLocation(64, child.getY());
                 if (child.getY() < getHeight() / 2) child.setLocation(child.getX(), getHeight() - child.getHeight() - 30);
@@ -367,7 +378,7 @@ public class MyWorld extends World {
      */
     public void LetThereBeFloor(){
         for(int i = 0; i < floors.length; i++){
-            if(roomTally < 3){
+            if(roomTally < 4){
                 floors[i] = new Wall("Sprites/Brick.png");
             } else {
                 floors[i] = new Wall("Sprites/Cloud.png");
@@ -377,6 +388,14 @@ public class MyWorld extends World {
     }
 
     public void generateWorld(String[][] room){
+        if(roomTally > 0 && roomTally < 3){
+            setBackground("Sprites/Brick_Wall.png");
+        } else if(roomTally > 2){
+            setBackground("Sprites/Cloudy_Background.png");
+        } else {
+            setBackground("Sprites/City_Background.png");
+        }
+
         for(int i = 0; i < room.length; i++){
             for(int j = 0; j < room[i].length; j++){
                 if(room[i][j].equals("b")){
@@ -396,7 +415,7 @@ public class MyWorld extends World {
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
                 else if(room[i][j].equals("d")){
-                    currentRoom[i][j] = new Door("Sprites/Brick.png");
+                    currentRoom[i][j] = new Door("Sprites/Door.png");
                     addObject(currentRoom[i][j], j*tileSize,i*tileSize);
                 }
                 else if(room[i][j].equals("e1")){
@@ -413,6 +432,9 @@ public class MyWorld extends World {
                     addObject(enemies.get(enemies.size()-1), j*tileSize,i*tileSize);
                     bullets.add(new Queue<Bullet>());
                     arrNum++;
+                }else if(room[i][j].equals("e4")) {
+                    boss = new Boss(child, this);
+                    addObject(boss, j * tileSize - 32, i * tileSize - 100);
                 }else if(room[i][j].equals("r")) {
                     String[] frame = new String[1];
                     frame[0] = "Sprites/Raindrop.png";
@@ -426,6 +448,8 @@ public class MyWorld extends World {
             removeObject(floors[i]);
         }
         LetThereBeFloor();
+        addObject(child, child.getX(), child.getY());
+        addObject(child.umbrella, child.umbrella.getX(), child.umbrella.getY());
         for(int i = 0; i < child.getHealth(); i++){
             removeObject(playerHearts.peek());
             playerHearts.pop();
