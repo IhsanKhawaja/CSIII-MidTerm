@@ -173,4 +173,8 @@ public class Child extends AnimatedActor{
     public int getScore(){
         return score;
     }
+
+    public boolean boss() {
+        return (isTouching(Boss.class) || isTouching(Lightning.class));
+    }
 }
