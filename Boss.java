@@ -20,7 +20,9 @@ public class Boss extends AnimatedActor{
     private boolean attacking;
     private Vector2D oldpos;
     private boolean move;
+    private boolean isDead;
     public Boss(Child child, MyWorld world){
+        isDead = false;
         move = true;
         bullets = new ArrayList<Bullet>();
         oldpos = new Vector2D();
@@ -70,6 +72,7 @@ public class Boss extends AnimatedActor{
 
         if(health.getHealth() <= 0){
             world.removeObject(this);
+            isDead = true;
         }
 
         if(isTouching(Weapon.class) && iframes == 0 && child.getAttack()){
@@ -148,4 +151,6 @@ public class Boss extends AnimatedActor{
         if (iframes > 0) iframes--;
         if(attackTimer < 310) attackTimer++;
     }
+    public boolean bossIsDead(){
+        return isDead;
 }
